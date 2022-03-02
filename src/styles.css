@@ -1,0 +1,51 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Pacifico', cursive;
+  font-size: 1.1rem;
+  color: rgb(245, 129, 42);
+}
+
+html {
+  background-color: rgb(254, 227, 197);
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar {
+  display: flex;
+  flex-direction: row;
+  background-color: rgb(158, 11, 14);
+  width: 100%;
+  padding: 10px;
+  gap: 20px;
+}
+
+.title {
+  flex: 1;
+}
+
+.score {
+}
+
+.display {
+  margin-top: 5px;
+  min-width: 19rem;
+  max-width: 37rem;
+}
+
+.card {
+  width: 9rem;
+  padding: 15px;
+}
+
+/* .card:hover {
+  width: 9.2rem;
+  position: relative;
+} */
