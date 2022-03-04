@@ -87,6 +87,9 @@ const App = () => {
           selection
         )}
       </Display>
+      <div class="footer">
+        <p>Click each character only once to win!</p>
+      </div>
     </div>
   );
 };
