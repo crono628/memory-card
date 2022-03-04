@@ -14,73 +14,65 @@ const App = () => {
   const [selection, setSelection] = useState([]);
   const [winner, setWinner] = useState(false);
   const [loser, setLoser] = useState(false);
+  const [cards, setCards] = useState(allCards);
 
   useEffect(() => {
     handleShuffle();
-  }, [currentScore, winner]);
+  }, [currentScore, highScore]);
 
   const handleShuffle = () => {
-    if (winner === false) {
-      setSelection([
-        shuffle(allCards).map((character) => (
-          <Card
-            key={uniqid()}
-            src={character.image}
-            id={character.name}
-            onClick={handleClick}
-            alt={character.name}
-          />
-        )),
-      ]);
-    } else return;
+    let copy = cards.slice();
+    let shufCopy = shuffle(copy).map((character) => (
+      <Card
+        key={uniqid()}
+        src={character.image}
+        id={character.name}
+        onClick={handleClick}
+        alt={character.name}
+      />
+    ));
+    setSelection(shufCopy);
   };
 
   const handleClick = (e) => {
     let cardId = e.target.id;
-    let findCard = allCards.find((card) => card.name === cardId);
+    let findCard = cards.find((card) => card.name === cardId);
     if (findCard.name === cardId && findCard.clicked === true) {
-      setHighScore(currentScore);
-      setCurrentScore(0);
       setLoser(true);
-      allCards.map((card) => (card.clicked = false));
+    } else if (checkWin()) {
+      setWinner(true);
     } else {
       setCurrentScore(currentScore + 1);
       findCard.clicked = true;
     }
-    if (allCards.every(checkClick)) {
-      setWinner(true);
-    }
   };
 
-  const checkClick = (currVal) => currVal.clicked === true;
-  const checkHighScore = () => {
-    if (currentScore > highScore) {
-      setHighScore(currentScore);
-    }
-  };
+  const checkWin = () => cards.every((item) => item.clicked === true);
 
   const shuffle = (array) => {
-    let copyArr = array.slice();
-    if (winner === false) {
-      let shuffled = copyArr.sort(() => 0.5 - Math.random());
-      let selected = shuffled.slice(0, 4);
-      if (shuffled.every(checkClick)) {
-        setWinner(true);
-        return winner;
-      } else if (selected.every(checkClick)) {
-        return shuffle(array);
-      } else {
-        console.log(selected);
-        return selected;
-      }
+    let copy = array.slice();
+    let shuffled = copy.sort(() => 0.5 - Math.random());
+    let selected = shuffled.slice(0, 4);
+    if (shuffled.every((item) => item.clicked === true)) {
+      setWinner(true);
+      return selected;
+    } else if (
+      selected.every((item) => item.clicked === true) &&
+      winner === false
+    ) {
+      return shuffle(array);
+    } else {
+      console.log(selected);
+      return selected;
     }
   };
 
   const handleReset = () => {
-    setHighScore(currentScore);
+    setHighScore(currentScore > highScore ? currentScore : highScore);
     setCurrentScore(0);
     setWinner(false);
-    handleShuffle();
+    setLoser(false);
+    cards.map((card) => (card.clicked = false));
   };
 
   return (
